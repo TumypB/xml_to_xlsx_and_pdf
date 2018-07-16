@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<book>
+  <styles>
+    <style name="normal" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0.5;0.5;0.5;0.5" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="near" valign="near" wrap="1" />
+    <style name="normal_wrap" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0.5;0.5;0.5;0.5" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="near" valign="near" wrap="1" />
+
+    <style name="heading" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0.5;0.5;0.5;0.5" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="center" valign="center" wrap="1" />
+    <style name="normal_digits" margin="0.0cm;0.0cm;0.1cm;0.1cm" border="0.5;0.5;0.5;0.5" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="far" valign="near" wrap="1" />
+    <style name="normal_noborder" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0;0;0;0" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="near" valign="near" wrap="1" />
+    <style name="normal_noborder_right" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0;0;0;0" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="far" valign="near" wrap="1" />
+  </styles>
+
+  <sheet style="normal" marginLeft="1cm" marginTop="1cm">
+    <colgroup>
+      <col width='85pt' />
+      <col width='35pt' />
+      <col width='65pt' />
+      <col width='65pt' />
+      <col width='65pt' />
+      <col width='42pt' />
+      <col width='40pt' />
+      <col width='53pt' />
+      <col width='45pt' />
+      <col width='48pt' />
+    </colgroup>
+    <!--<tr>
+      <td>
+        <span font-name="Calibri" font-size="12" font-weight="bold">This is just a test. I love testing everything I can!</span>
+        <span font-name="Calibri" font-size="20" font-weight="bold">Bigger is better then small</span>
+	<qrcode data="ST00012|Name=ООО Абаканэнергосбыт|PersonalAcc=40702810000010105102|BankName=ООО Хакасский Муниципальный банк г. Абакана|BIC=049514745|CorrespAcc=30101810900000000745|PayeeINN=1901064509|Sum=-508|Purpose=Электроэнергия|payerAddress=НЕКРАСОВА,24Б-43|persAcc=84859|" width="4cm" height="4cm" />
+	<span font-name="Calibri" font-size="20" font-weight="bold">QR rocks!</span>
+	<qrcode data="ST00012|Name=ООО Абаканэнергосбыт|PersonalAcc=40702810000010105102|BankName=ООО Хакасский Муниципальный банк г. Абакана|BIC=049514745|CorrespAcc=30101810900000000745|PayeeINN=1901064509|Sum=-508|Purpose=Электроэнергия|payerAddress=НЕКРАСОВА,24Б-43|persAcc=84859|" width="4cm" height="4cm" />
+	<qrcode data="ST00012|Name=ООО Абаканэнергосбыт|PersonalAcc=40702810000010105102|BankName=ООО Хакасский Муниципальный банк г. Абакана|BIC=049514745|CorrespAcc=30101810900000000745|PayeeINN=1901064509|Sum=-508|Purpose=Электроэнергия|payerAddress=НЕКРАСОВА,24Б-43|persAcc=84859|" width="4cm" height="4cm" />
+	<qrcode data="ST00012|Name=ООО Абаканэнергосбыт|PersonalAcc=40702810000010105102|BankName=ООО Хакасский Муниципальный банк г. Абакана|BIC=049514745|CorrespAcc=30101810900000000745|PayeeINN=1901064509|Sum=-508|Purpose=Электроэнергия|payerAddress=НЕКРАСОВА,24Б-43|persAcc=84859|" width="4cm" height="4cm" />
+	<br/>
+	<br/>
+        <span font-name="Calibri" font-size="20" font-weight="bold">After br's</span>
+      </td>
+      <td>
+	<qrcode data="ST00012|Name=ООО Абаканэнергосбыт|PersonalAcc=40702810000010105102|BankName=ООО Хакасский Муниципальный банк г. Абакана|BIC=049514745|CorrespAcc=30101810900000000745|PayeeINN=1901064509|Sum=-508|Purpose=Электроэнергия|payerAddress=НЕКРАСОВА,24Б-43|persAcc=84859|" width="4cm" height="4cm" />
+      </td>
+    </tr>-->
+    <tr height='40pt'>
+      <td colspan='8' style="normal_wrap">
+        ООО &quot;Абаканэнергосбыт&quot;, 655016, г. Абакан, ул. Лермонтова, 18,<br/>
+        пом. 156Н-157Н, доп. Офис по обслуживанию физических лиц<br/>
+        ул. Советская, 25, тел. 399450, Р/с 40702810000010105102,<br/>
+        ООО ХМБ г. Абакана, ИНН 1901064509, ОГРН 1041901013747
+      </td>
+      <td colspan='2' rowspan='2' style='heading'>
+        <qrcode data="ST00012|Name=ООО Абаканэнергосбыт|PersonalAcc=40702810000010105102|BankName=ООО Хакасский Муниципальный банк г. Абакана|BIC=049514745|CorrespAcc=30101810900000000745|PayeeINN=1901064509|Sum=-508|Purpose=Электроэнергия|payerAddress=НЕКРАСОВА,24Б-43|persAcc=84859|" width="75" height="75" />
+      </td>
+    </tr>
+    <tr height='40pt'>
+      <td colspan='8' style="normal_wrap">
+        Счёт-извещение за электроэнергию<br/>
+        <span font-weight='bold'>Аб.№ 241171 Адрес: СЕВЕРНЫЙ ПР., 7-50</span><br/>
+        <span font-weight='bold'>Об.№ 1</span>
+        <span>Тариф: 1,39 Руб./кВтч (Счётчик. Электроплита.)</span><br/>
+        <span font-weight='bold'>Лицевой счёт в ГИС ЖКХ: 1900241171001</span>
+      </td>
+    </tr>
+    <tr height="4">
+      <td colspan='10' style='normal_noborder'>
+      </td>
+    </tr>
+    <tr height='12'>
+      <td colspan='5' style='normal_noborder'>
+        <span font-weight='bold'>РАСЧЁТ РАЗМЕРА ПЛАТЫ ЗА КОММУНАЛЬНЫЕ РЕСУРСЫ, УСЛУГИ</span>
+      </td>
+      <td colspan='5' style='normal_noborder'>
+        Счёт-квитанция получена по электронной почте 1
+      </td>
+    </tr>
+    <tr height='3'>
+      <td colspan="10" style="normal_noborder"></td>
+    </tr>
+    <tr height="48">
+      <td rowspan='2' style='heading'>Виды ресурсов, услуг</td>
+      <td rowspan='2' style='heading'>Ед. изм.</td>
+      <td rowspan='2' style='heading'>Признак начисления</td>
+      <td colspan='2' style='heading'>Объём ком. ресурса, услуги</td>
+      <td rowspan='2' style='heading'>Объём коммун. Ресурса, услуги, ИТОГО:</td>
+      <td rowspan='2' style='heading'>Тариф, руб./ед.изм.</td>
+      <td rowspan='2' style='heading'>Начислено, руб.</td>
+      <td rowspan='2' style='heading'>Перерас-чёты всего, руб.</td>
+      <td rowspan='2' style='heading'>Итого начислено, руб.</td>
+    </tr>
+    <tr height='17'>
+      <td height='17'>ИП</td>
+      <td>ОДН</td>
+    </tr>
+    <tr height='12'>
+      <td style='normal_digits'>Электроэнергия</td>
+      <td style='normal_digits'>кВт*ч</td>
+      <td style='normal_digits'></td>
+      <td style='normal_digits'>300</td>
+      <td style='normal_digits'>0</td>
+      <td style='normal_digits'>343</td>
+      <td style='normal_digits'>1,99</td>
+      <td style='normal_digits'>611, 95</td>
+      <td style='normal_digits'>0</td>
+      <td style='normal_digits'>611, 95</td>
+    </tr>
+    <tr height='17'>
+      <td colspan='9'>Итого к оплате за расчётный период</td>
+      <td style='normal_digits'>611,95</td>
+    </tr>
+    <tr height='6'>
+      <td colspan='10' style='normal_noborder'></td>
+    </tr>
+    <tr height='14'>
+      <td colspan='3' style='normal_noborder'>
+        <span font-weight='bold'>Справочная информация</span>
+      </td>
+      <td style='normal_noborder'></td>
+      <td colspan='6' style='normal_noborder_right'>
+        <span font-weight='bold'>Сведения о перерасчётах (доначисления +, уменьшения -)</span>
+      </td>
+    </tr>
+    <tr height='34'>
+      <td style='heading'>Виды ресурсов, услуг</td>
+      <td style='heading'>Ед. изм.</td>
+      <td colspan='2' style='heading'>
+        Дата / Показания индивидуальных ПУ
+      </td>
+      <td colspan='2' style='heading'>
+        Суммарный объём ком. Ресурса, услуги
+      </td>
+      <td colspan='2' style='heading'>
+        Норматив потребления ком. Ресурса, услуги
+      </td>
+      <td rowspan='2' style='heading'>
+        Размер платы, руб.</td>
+      <td rowspan='2' style='heading'>
+        Сумма, руб.
+      </td>
+    </tr>
+    <tr height='22'>
+      <td style='heading'></td>
+      <td style='heading'></td>
+      <td style='heading'>предыдущие</td>
+      <td style='heading'>текущие</td>
+      <td style='heading'>в помещениях дома</td>
+      <td style='heading'>ОДН</td>
+      <td style='heading'>ИП</td>
+      <td style='heading'>ОДН</td>
+    </tr>
+    <tr>
+      <td style='normal_digits'>Электроэнергия</td>
+      <td style='normal_digits'>кВт*ч</td>
+      <td style='normal_digits'>01.03.2018</td>
+      <td style='normal_digits'></td>
+      <td style='normal_digits'>31.03.2018</td>
+      <td style='normal_digits'></td>
+      <td style='normal_digits'></td>
+      <td style='normal_digits'></td>
+      <td style='normal_digits'></td>
+      <td style='normal_digits'></td>
+    </tr>
+    <tr>
+      <td colspan='4' rowspan='4'>
+        <qrcode data="ST00012|Name=ООО Абаканэнергосбыт|PersonalAcc=40702810000010105102|BankName=ООО Хакасский Муниципальный банк г. Абакана|BIC=049514745|CorrespAcc=30101810900000000745|PayeeINN=1901064509|Sum=-508|Purpose=Электроэнергия|payerAddress=НЕКРАСОВА,24Б-43|persAcc=84859|" width="75" height="75" />
+      </td>
+    </tr>
+  </sheet>
+</book>
