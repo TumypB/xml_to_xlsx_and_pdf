@@ -10,13 +10,16 @@ namespace PdfBackend
     class FontManager
     {
         static Dictionary<string, XFont> fonts = new Dictionary<string, XFont>();
-        public static XFont GetFont(string name, double size, bool bold)
+        public static XFont GetFont(string name, double size, FontStyle fontStyle)
         {
-            var k = name + size + bold;
+            var k = name + size + fontStyle;
             XFont font;
             if (!fonts.TryGetValue(k, out font))
             {
-                font = new XFont(name, size, bold ? XFontStyle.Bold : XFontStyle.Regular);
+                XFontStyle fs = XFontStyle.Regular;
+                fs |= fontStyle == FontStyle.Bold ? XFontStyle.Bold : XFontStyle.Regular;
+                fs |= fontStyle == FontStyle.Underline ? XFontStyle.Underline : XFontStyle.Regular;
+                font = new XFont(name, size, fs);
                 fonts.Add(k, font);
             }
             return font;

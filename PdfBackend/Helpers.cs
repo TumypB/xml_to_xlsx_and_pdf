@@ -19,7 +19,7 @@ namespace PdfBackend
             else if (size.EndsWith("pt"))
                 return double.Parse(size.Substring(0, size.Length - 2), CultureInfo.InvariantCulture);
             else
-                return double.Parse(size, CultureInfo.InvariantCulture);
+                return double.Parse(size, CultureInfo.InvariantCulture) * 6;
         }
 
         public static Tuple<string, string> WrapLine(XGraphics gfx, XFont font, double width, string input)
@@ -54,7 +54,10 @@ namespace PdfBackend
                     break;
                 }
             }
-            return Tuple.Create(input.Substring(0, i - 1), input.Substring(i - 1));
+            if (input.Length < 2)
+                return Tuple.Create(input, (string)null);
+            else
+                return Tuple.Create(input.Substring(0, i - 1), input.Substring(i - 1));
         }
 
         public static string GetAttributeValue(XElement xStyle, string attr)

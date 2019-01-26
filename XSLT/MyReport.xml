@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <book>
   <styles>
-    <style name="normal" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0.5;0.5;0.5;0.5" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="near" valign="near" wrap="1" />
+    <style name="normal" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0.5;0.5;0.5;0.5" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="near" valign="near" />
     <style name="normal_wrap" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0.5;0.5;0.5;0.5" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="near" valign="near" wrap="1" />
-
     <style name="heading" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0.5;0.5;0.5;0.5" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="center" valign="center" wrap="1" />
     <style name="normal_digits" margin="0.0cm;0.0cm;0.1cm;0.1cm" border="0.5;0.5;0.5;0.5" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="far" valign="near" wrap="1" />
     <style name="normal_noborder" margin="0.0cm;0.0cm;0.0cm;0.0cm" border="0;0;0;0" decoration="solid,solid,solid,solid" fill="#FF0000" font-name="Calibri" font-size="8" align="near" valign="near" wrap="1" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PdfSharp.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -195,9 +196,15 @@ namespace PdfBackend
         }
     }
 
+    class Para
+    {
+        public double indent = 0.0;
+        public Span[] Text;
+    }
+
     class Cell
     {
-        public Span[] Text;
+        public Para[] Text;
 
         public SpanInfo SpanInfo;
         public int ColumnIndex;
@@ -225,10 +232,18 @@ namespace PdfBackend
             var styleName = (string)xTd.Attribute("style");
 
             cell.Style = styleName == null ? defaultStyle : styles[styleName];
+            var paras = new List<Para>();
+            ProcessCellContent(xTd, cell.Style, paras, insideP: false);
+            cell.Text = paras.ToArray();
 
+            return cell;
+        }
+
+        private static void ProcessCellContent(XElement xCell, Style style, List<Para> paras, bool insideP)
+        {
             var lines = new List<Span>();
             Span lastSpan = null;
-            foreach (var n in xTd.Nodes())
+            foreach (var n in xCell.Nodes())
             {
                 if (n.NodeType == System.Xml.XmlNodeType.Comment)
                 {
@@ -236,7 +251,8 @@ namespace PdfBackend
                 }
                 else if (n.NodeType == System.Xml.XmlNodeType.Text)
                 {
-                    lastSpan = new TextSpan() { Text = ((XText)n).Value.Trim('\n', ' ') };
+                    //lastSpan = new TextSpan() { Text = ((XText)n).Value.Trim('\n', ' ') };
+                    lastSpan = new TextSpan() { Text = ((XText)n).Value.Trim('\n') };
                     lines.Add(lastSpan);
                 }
                 else if (n.NodeType == System.Xml.XmlNodeType.Element)
@@ -248,19 +264,33 @@ namespace PdfBackend
                             lastSpan.NewLineAfter = true;
                         else
                         {
-                            lastSpan = new TextSpan() {  Text = "", NewLineAfter = true };
+                            lastSpan = new TextSpan() { Text = "", NewLineAfter = true };
                             lines.Add(lastSpan);
                         }
                     }
                     else if (x.Name.LocalName == "span")
                     {
-                        lastSpan = TextSpan.FromXElement(x, cell.Style.FontName, cell.Style.FontSize);
+                        lastSpan = TextSpan.FromXElement(x, style.FontName, style.FontSize);
                         lines.Add(lastSpan);
                     }
-                    else  if (x.Name.LocalName == "qrcode")
+                    else if (x.Name.LocalName == "qrcode")
                     {
-                        lastSpan = QrSpan.FromXElement(x);
+                        lastSpan = ImgSpan.FromXElementQr(x);
                         lines.Add(lastSpan);
+                    }
+                    else if (x.Name.LocalName == "img")
+                    {
+                        lastSpan = ImgSpan.FromXElementImg(x);
+                        lines.Add(lastSpan);
+                    }
+                    else if (x.Name.LocalName == "p")
+                    {
+                        if (insideP)
+                            throw new Exception("Абзац внутри абзаца это плохая идея");
+                        if (lines.Count > 0)
+                            paras.Add(new Para() { Text = lines.ToArray() });
+                        ProcessCellContent(x, style, paras, true);
+                        lines.Clear();
                     }
                     else
                         throw new NotImplementedException();
@@ -268,10 +298,8 @@ namespace PdfBackend
                 else
                     throw new NotImplementedException();
             }
-
-            cell.Text = lines.ToArray();
-
-            return cell;
+            if (lines.Count > 0)
+                paras.Add(new Para() { Text = lines.ToArray(), indent = insideP ? Helpers.ParseSize("1.5cm") : 0 });
         }
 
         public override string ToString()
@@ -285,12 +313,19 @@ namespace PdfBackend
         public bool NewLineAfter;
     }
 
+    enum FontStyle
+    {
+        Regular = 0,
+        Bold,
+        Underline
+    }
+
     class TextSpan : Span
     {
         public string Text;
         public string FontName;
-        public bool IsBold;
         public double FontSize;
+        public FontStyle FontStyle;
 
         public static Span FromXElement(XElement x, string defaultFontName, double defaultFontSize)
         {
@@ -298,20 +333,26 @@ namespace PdfBackend
             res.Text = x.Value;
             res.FontName = (string)x.Attribute("font-name") ?? defaultFontName;
             res.FontSize = (int?)x.Attribute("font-size") ?? defaultFontSize;
-            res.IsBold = ((string)x.Attribute("font-weight") ?? "").ToLower() == "bold";
+            res.FontStyle = FontStyle.Regular;
+            if (((string)x.Attribute("font-weight") ?? "").ToLower() == "bold")
+                res.FontStyle = FontStyle.Bold;
+
+            if (((string)x.Attribute("text-decoration") ?? "").ToLower() == "underline")
+                res.FontStyle = FontStyle.Underline;
+
             return res;
         }
     }
 
-    class QrSpan : Span
+    class ImgSpan : Span
     {
         public double Width;
         public double Height;
         public System.IO.MemoryStream Data;
 
-        internal static QrSpan FromXElement(XElement x)
+        internal static ImgSpan FromXElementQr(XElement x)
         {
-            var res = new QrSpan();
+            var res = new ImgSpan();
             res.Width = Helpers.ParseSize((string)x.Attribute("width"));
             res.Height = Helpers.ParseSize((string)x.Attribute("height"));
 
@@ -326,6 +367,18 @@ namespace PdfBackend
                 res.Data.Flush();
                 res.Data.Seek(0, System.IO.SeekOrigin.Begin);
             }
+            return res;
+        }
+
+        internal static ImgSpan FromXElementImg(XElement x)
+        {
+            var res = new ImgSpan();
+            res.Width = Helpers.ParseSize((string)x.Attribute("width"));
+            res.Height = Helpers.ParseSize((string)x.Attribute("height"));
+            res.Data = new System.IO.MemoryStream();
+            var bw = new System.IO.BinaryWriter(res.Data);
+            bw.Write(Convert.FromBase64String(x.Value));
+            bw.Flush();
             return res;
         }
     }

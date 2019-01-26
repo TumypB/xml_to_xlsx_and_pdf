@@ -10,7 +10,7 @@ namespace PdfBackend
 {
     class Render
     {
-        private static List<Block> FormatParagraph(IEnumerable<Span> spans, XGraphics gfx, XFont defaultFont, Align align, double width)
+        private static List<Block> FormatParagraph(IEnumerable<Span> spans, XGraphics gfx, XFont defaultFont, Align align, double width, double indent, ref double paraY)
         {
             if (!spans.Any())
                 return new List<Block>(0);
@@ -18,16 +18,16 @@ namespace PdfBackend
             var res = new List<List<Block>>();
             var currentLine = new List<Block>();
             res.Add(currentLine);
-            var x = 0.0d;
+            var x = indent;
 
             foreach (var span in spans)
             {
-                var imageSpan = span as QrSpan;
+                var imgSpan = span as ImgSpan;
                 var textSpan = span as TextSpan;
 
-                if (imageSpan != null)
+                if (imgSpan != null)
                 {
-                    if ((width - x) < imageSpan.Width)
+                    if ((width - x) < imgSpan.Width)
                     {
                         x = 0;
                         currentLine = new List<Block>();
@@ -36,13 +36,13 @@ namespace PdfBackend
 
                     currentLine.Add(new ImageBlock()
                     {
-                        Height = imageSpan.Height,
-                        Width = imageSpan.Width,
-                        Image = XImage.FromStream(imageSpan.Data)
+                        Height = imgSpan.Height,
+                        Width = imgSpan.Width,
+                        Image = XImage.FromStream(imgSpan.Data)
                     });
-                    x += imageSpan.Width;
+                    x += imgSpan.Width;
 
-                    if (imageSpan.NewLineAfter)
+                    if (imgSpan.NewLineAfter)
                     {
                         x = 0;
                         currentLine = new List<Block>();
@@ -51,7 +51,7 @@ namespace PdfBackend
                 }
                 else if (textSpan != null)
                 {
-                    var f = textSpan.FontName == null ? defaultFont : FontManager.GetFont(textSpan.FontName, textSpan.FontSize, textSpan.IsBold);
+                    var f = textSpan.FontName == null ? defaultFont : FontManager.GetFont(textSpan.FontName, textSpan.FontSize, textSpan.FontStyle);
                     var text = textSpan.Text;
 
                     while (text != null)
@@ -79,24 +79,29 @@ namespace PdfBackend
                     }
                 }
             }
-                        
-            var y = 0.0d;
+
+            var firstLine = true;
             foreach (var line in res.Where(l => l.Any()))
             {
                 var lineHeight = line.Max(block => block.Height);
                 var maxAscent = line.Max(block => block.Ascent);
                 x = 0;
+                if (firstLine)
+                {
+                    x = indent;
+                    firstLine = false;
+                }
                 foreach (var block in line)
                 {
-                    block.Y = y + maxAscent;
+                    block.Y = paraY + maxAscent;
                     block.X = x;
                     x += block.Width;
                 }
-                y += (lineHeight * 1.05);
+                paraY += (lineHeight * 1.05);
                 UpdateBlockAlignment(align, width, line);
             }
 
-            return res.SelectMany(a=>a).ToList();
+            return res.SelectMany(a => a).ToList();
         }
 
         private static void UpdateBlockAlignment(Align align, double width, List<Block> currentLine)
@@ -164,13 +169,20 @@ namespace PdfBackend
         private static double MeasureCellHeight(XGraphics gfx, Cell c, double width)
         {
             var font = GetFont(c.Style);
-            var b = FormatParagraph(c.Text, gfx, font, c.Style.HorizontalAlign, width - c.Style.MarginLeft - c.Style.MarginRight);
-            return getFormattedTextHeight(b) + c.Style.MarginTop + c.Style.MarginBottom;
+            var paraY = 0.0;
+            var b =
+                c.Text.Sum(p =>
+                    getFormattedTextHeight(
+                        FormatParagraph(p.Text, gfx, font, c.Style.HorizontalAlign, width - c.Style.MarginLeft - c.Style.MarginRight, p.indent, ref paraY)
+                    )
+                );
+
+            return b + c.Style.MarginTop + c.Style.MarginBottom;
         }
 
         private static double getFormattedTextHeight(List<Block> paragraph)
         {
-            return paragraph.Count > 0 
+            return paragraph.Count > 0
                 ? paragraph.Max(z => z.Y + z.Descent)
                 : 0;
         }
@@ -265,8 +277,13 @@ namespace PdfBackend
             RenderBorder(gfx, x, y, w, h, c.Style);
 
             var font = GetFont(c.Style);
-            var blocks = FormatParagraph(c.Text, gfx, font, c.Style.HorizontalAlign, w - c.Style.MarginLeft - c.Style.MarginRight);
-            var th = getFormattedTextHeight(blocks);
+
+            var paras = new List<List<Block>>();
+            var paraY = 0.0;
+            foreach (var p in c.Text)
+                paras.Add(FormatParagraph(p.Text, gfx, font, c.Style.HorizontalAlign, w - c.Style.MarginLeft - c.Style.MarginRight, p.indent, ref paraY));
+
+            var th = paras.Sum(b => getFormattedTextHeight(b));
 
             double yy;
             switch (c.Style.VerticalAlign)
@@ -280,23 +297,27 @@ namespace PdfBackend
             var state = gfx.Save();
             gfx.IntersectClip(new XRect(x, y, w, h));
 
-            foreach (var b in blocks)
+            foreach (var blocks in paras)
             {
-                var tb = b as TextBlock;
-                if (tb != null)
+                foreach (var b in blocks)
                 {
-                    gfx.DrawString(tb.Text, tb.Font, XBrushes.Black, b.X + x + c.Style.MarginLeft, b.Y + yy, format);
-                    continue;
-                }
-                var ib = b as ImageBlock;
-                if (ib != null)
-                {
-                    gfx.DrawImage(ib.Image, 
-                        ib.X + x + c.Style.MarginLeft, ib.Y + yy - ib.Height, ib.Width, ib.Height
-                    );
-                    continue;
+                    var tb = b as TextBlock;
+                    if (tb != null)
+                    {
+                        gfx.DrawString(tb.Text, tb.Font, XBrushes.Black, b.X + x + c.Style.MarginLeft, b.Y + yy, format);
+                        continue;
+                    }
+                    var ib = b as ImageBlock;
+                    if (ib != null)
+                    {
+                        gfx.DrawImage(ib.Image,
+                            ib.X + x + c.Style.MarginLeft, ib.Y + yy - ib.Height, ib.Width, ib.Height
+                        );
+                        continue;
+                    }
                 }
             }
+
             gfx.Restore(state);
         }
     }
