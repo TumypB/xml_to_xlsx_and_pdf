@@ -17,8 +17,8 @@ namespace PdfBackend
             if (!fonts.TryGetValue(k, out font))
             {
                 XFontStyle fs = XFontStyle.Regular;
-                fs |= fontStyle == FontStyle.Bold ? XFontStyle.Bold : XFontStyle.Regular;
-                fs |= fontStyle == FontStyle.Underline ? XFontStyle.Underline : XFontStyle.Regular;
+                fs |= (fontStyle & FontStyle.Bold) == FontStyle.Bold ? XFontStyle.Bold : XFontStyle.Regular;
+                fs |= (fontStyle & FontStyle.Underline) == FontStyle.Underline ? XFontStyle.Underline : XFontStyle.Regular;
                 font = new XFont(name, size, fs);
                 fonts.Add(k, font);
             }

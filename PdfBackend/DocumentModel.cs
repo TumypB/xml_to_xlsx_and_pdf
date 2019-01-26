@@ -316,8 +316,8 @@ namespace PdfBackend
     enum FontStyle
     {
         Regular = 0,
-        Bold,
-        Underline
+        Bold = 1,
+        Underline = 2
     }
 
     class TextSpan : Span
