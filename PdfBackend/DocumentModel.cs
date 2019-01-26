@@ -335,10 +335,10 @@ namespace PdfBackend
             res.FontSize = (int?)x.Attribute("font-size") ?? defaultFontSize;
             res.FontStyle = FontStyle.Regular;
             if (((string)x.Attribute("font-weight") ?? "").ToLower() == "bold")
-                res.FontStyle = FontStyle.Bold;
+                res.FontStyle |= FontStyle.Bold;
 
             if (((string)x.Attribute("text-decoration") ?? "").ToLower() == "underline")
-                res.FontStyle = FontStyle.Underline;
+                res.FontStyle |= FontStyle.Underline;
 
             return res;
         }
